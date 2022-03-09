@@ -11,24 +11,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.heltonbustos.ejemplosqlite01.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
 
-    EditText txtCodigo, txtDescripcion, txtPrecio;
-    Button btnBuscar, btnGuardar, btnEditar, btnBorrar;
+    ActivityMainBinding x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        txtCodigo = findViewById(R.id.txtCodigo);
-        txtDescripcion = findViewById(R.id.txtDescripcion);
-        txtPrecio = findViewById(R.id.txtPrecio);
-
-        btnBuscar = findViewById(R.id.btnBuscar);
-        btnGuardar = findViewById(R.id.btnGuardar);
-        btnEditar = findViewById(R.id.btnEditar);
-        btnBorrar = findViewById(R.id.btnBorrar);
+        x = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(x.getRoot());
 
     }
 
@@ -36,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         ConexionBD conexion = new ConexionBD(this, "administracion", null, 1);
         SQLiteDatabase bd = conexion.getWritableDatabase();
 
-        String codigo = txtCodigo.getText().toString();
-        String descripcion = txtDescripcion.getText().toString();
-        String precio = txtPrecio.getText().toString();
+        String codigo = x.txtCodigo.getText().toString();
+        String descripcion = x.txtDescripcion.getText().toString();
+        String precio = x.txtPrecio.getText().toString();
 
         ContentValues registro = new ContentValues();
         registro.put("codigo", codigo);
@@ -48,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         bd.insert("articulos", null, registro);
         bd.close();
 
-        txtCodigo.setText("");
-        txtDescripcion.setText("");
-        txtPrecio.setText("");
+        x.txtCodigo.setText("");
+        x.txtDescripcion.setText("");
+        x.txtPrecio.setText("");
 
         Toast.makeText(this, "Registrado correctamente", Toast.LENGTH_SHORT).show();
     }
@@ -59,22 +53,22 @@ public class MainActivity extends AppCompatActivity {
        ConexionBD conexion = new ConexionBD(this, "administracion", null, 1);
        SQLiteDatabase bd = conexion.getWritableDatabase();
 
-       String codigo = txtCodigo.getText().toString();
+       String codigo = x.txtCodigo.getText().toString();
 
        Cursor fila = bd.rawQuery("SELECT descripcion, precio FROM articulos WHERE codigo='"+codigo+"'", null);
 
        if(fila.moveToFirst()){
-           txtDescripcion.setText(fila.getString(0));
-           txtPrecio.setText(fila.getString(1));
+           x.txtDescripcion.setText(fila.getString(0));
+           x.txtPrecio.setText(fila.getString(1));
            bd.close();
            Toast.makeText(this, "Producto encontrado!", Toast.LENGTH_SHORT).show();
        }
        else{
            bd.close();
            Toast.makeText(this, "No se encuentra el producto", Toast.LENGTH_SHORT).show();
-           txtCodigo.setText("");
-           txtDescripcion.setText("");
-           txtPrecio.setText("");
+           x.txtCodigo.setText("");
+           x.txtDescripcion.setText("");
+           x.txtPrecio.setText("");
        }
     }
 
@@ -82,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
         ConexionBD conexion = new ConexionBD(this, "administracion", null, 1);
         SQLiteDatabase bd = conexion.getWritableDatabase();
 
-        String codigo = txtCodigo.getText().toString();
-        String descripcion = txtDescripcion.getText().toString();
-        String precio = txtPrecio.getText().toString();
+        String codigo = x.txtCodigo.getText().toString();
+        String descripcion = x.txtDescripcion.getText().toString();
+        String precio = x.txtPrecio.getText().toString();
 
         ContentValues registro = new ContentValues();
         registro.put("codigo", codigo);

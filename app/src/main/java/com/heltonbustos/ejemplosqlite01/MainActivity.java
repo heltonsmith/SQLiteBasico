@@ -26,6 +26,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void borrar(View view){
+        ConexionBD conexion = new ConexionBD(this, "administracion", null, 1);
+        SQLiteDatabase bd = conexion.getWritableDatabase();
+
+        String codigo = x.txtCodigo.getText().toString();
+
+        int a = bd.delete("articulos", "codigo="+codigo, null);
+
+        if (a > 0){
+            Toast.makeText(this, "Borrado correctamente!", Toast.LENGTH_SHORT).show();
+        }
+
+        bd.close();
+
+        x.txtCodigo.setText("");
+        x.txtDescripcion.setText("");
+        x.txtPrecio.setText("");
+    }
+
     public void guardar(View view){
         ConexionBD conexion = new ConexionBD(this, "administracion", null, 1);
         SQLiteDatabase bd = conexion.getWritableDatabase();
@@ -85,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
         registro.put("descripcion", descripcion);
         registro.put("precio", precio);
 
-        int x = bd.update("articulos", registro, "codigo='"+codigo+"'", null);
+        int a = bd.update("articulos", registro, "codigo='"+codigo+"'", null);
 
-        if(x>0){
+        if(a>0){
             Toast.makeText(this, "Modificado correctamente", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -95,4 +114,8 @@ public class MainActivity extends AppCompatActivity {
         }
         bd.close();
     }
+
+
+
+
 }
